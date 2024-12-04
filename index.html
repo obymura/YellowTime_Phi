@@ -115,30 +115,30 @@
         .text {
             position: absolute;
             color: white;
-            font-size: 9.6px; /* Divisé par 2.5 depuis 24px */
+            font-size: 9.6px;
             font-family: Arial, sans-serif;
-            letter-spacing: 0.8px; /* Réduction proportionnelle */
-            font-weight: 300; /* Texte fin */
+            letter-spacing: 0.8px;
+            font-weight: 300;
             line-height: 1;
         }
 
         .top-left {
-            top: 20px; /* Espacement doublé */
+            top: 20px;
             left: 20px;
         }
 
         .top-right {
-            top: 20px; /* Espacement doublé */
+            top: 20px;
             right: 20px;
         }
 
         .bottom-left {
-            bottom: 20px; /* Espacement doublé */
+            bottom: 20px;
             left: 20px;
         }
 
         .bottom-right {
-            bottom: 20px; /* Espacement doublé */
+            bottom: 20px;
             right: 20px;
         }
     </style>
@@ -166,97 +166,21 @@
         const circleElement = document.getElementById('circle');
         const dayElement = document.getElementById('day');
 
-        // Ajout des en-têtes nécessaires pour les CORS
-        fetch(window.location.href, {
-            method: 'GET',
-            headers: {
-                'Access-Control-Allow-Origin': '*',
-                'Content-Type': 'text/html'
-            }
-        });
-
         // Modèles pour les chiffres en pixel art
         const digits = {
-            '0': [
-                '111',
-                '101',
-                '101',
-                '101',
-                '111',
-            ],
-            '1': [
-                '010',
-                '110',
-                '010',
-                '010',
-                '111',
-            ],
-            '2': [
-                '111',
-                '001',
-                '111',
-                '100',
-                '111',
-            ],
-            '3': [
-                '111',
-                '001',
-                '111',
-                '001',
-                '111',
-            ],
-            '4': [
-                '101',
-                '101',
-                '111',
-                '001',
-                '001',
-            ],
-            '5': [
-                '111',
-                '100',
-                '111',
-                '001',
-                '111',
-            ],
-            '6': [
-                '111',
-                '100',
-                '111',
-                '101',
-                '111',
-            ],
-            '7': [
-                '111',
-                '001',
-                '010',
-                '010',
-                '010',
-            ],
-            '8': [
-                '111',
-                '101',
-                '111',
-                '101',
-                '111',
-            ],
-            '9': [
-                '111',
-                '101',
-                '111',
-                '001',
-                '111',
-            ],
-            ':': [
-                '000',
-                '010',
-                '000',
-                '010',
-                '000',
-            ],
+            '0': ['111','101','101','101','111'],
+            '1': ['010','110','010','010','111'],
+            '2': ['111','001','111','100','111'],
+            '3': ['111','001','111','001','111'],
+            '4': ['101','101','111','001','001'],
+            '5': ['111','100','111','001','111'],
+            '6': ['111','100','111','101','111'],
+            '7': ['111','001','010','010','010'],
+            '8': ['111','101','111','101','111'],
+            '9': ['111','101','111','001','111'],
+            ':': ['000','010','000','010','000']
         };
 
-        // Fonction pour dessiner un chiffre en pixel art
         function drawDigit(digit, offsetX, offsetY) {
             const digitPattern = digits[digit];
             digitPattern.forEach((row, rowIndex) => {
@@ -270,41 +194,21 @@
             });
         }
 
-        // Fonction pour mettre à jour l'heure et le jour
         function updateTimer() {
             const now = new Date();
-            const timeString = now
-                .toLocaleTimeString('en-US', { hour12: false })
-                .replace(/:/g, ':');
+            const timeString = now.toLocaleTimeString('en-US', { hour12: false }).replace(/:/g, ':');
             timerElement.innerHTML = '';
-            const offsetXStart = 10;
-            const offsetYStart = 23;
-            let offsetX = offsetXStart;
+            let offsetX = 10;
             timeString.split('').forEach(char => {
-                drawDigit(char, offsetX, offsetYStart);
+                drawDigit(char, offsetX, 23);
                 offsetX += 4;
             });
-
-            // Définir le 4 décembre comme DAY 1
             const startDate = new Date("2024-12-04T00:00:00Z");
             const daysElapsed = Math.floor((now - startDate) / (1000 * 60 * 60 * 24)) + 1;
             dayElement.textContent = `DAY_${daysElapsed}`;
-
-            // Effet stroboscopique toutes les 30 secondes
-            if (now.getSeconds() % 30 === 0) {
-                let count = 0;
-                const strobe = setInterval(() => {
-                    circleElement.classList.toggle('negative');
-                    count++;
-                    if (count >= 6) clearInterval(strobe); // 6 transitions rapides
-                }, 100); // Chaque bascule dure 100ms
-            }
         }
 
-        // Mettre à jour toutes les secondes
         setInterval(updateTimer, 1000);
-
-        // Initialisation
         updateTimer();
     </script>
 </body>
