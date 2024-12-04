@@ -166,6 +166,15 @@
         const circleElement = document.getElementById('circle');
         const dayElement = document.getElementById('day');
 
+        // Ajout des en-têtes nécessaires pour les CORS
+        fetch(window.location.href, {
+            method: 'GET',
+            headers: {
+                'Access-Control-Allow-Origin': '*',
+                'Content-Type': 'text/html'
+            }
+        });
+
         // Modèles pour les chiffres en pixel art
         const digits = {
             '0': [
